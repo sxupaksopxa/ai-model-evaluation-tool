@@ -1,0 +1,37 @@
+[
+  {
+    "id": "classification",
+    "name": "Classification",
+    "description": "Classify text into predefined categories, labels, or sentiment classes.",
+    "example_input": "The customer was very satisfied with the service and would recommend it to others.",
+    "example_output": "Positive"
+  },
+  {
+    "id": "summarization",
+    "name": "Summarization",
+    "description": "Generate a concise summary of the provided text.",
+    "example_input": "Our quarterly revenue increased by 15%, customer retention improved, and two new products were launched.",
+    "example_output": "Revenue grew 15%, retention improved, and two products were launched."
+  },
+  {
+    "id": "entity_extraction",
+    "name": "Entity Extraction",
+    "description": "Extract people, organizations, locations, dates, and other entities from text.",
+    "example_input": "John Smith joined IBM in Vienna on 1 June 2026.",
+    "example_output": "{ \"persons\": [\"John Smith\"], \"organizations\": [\"IBM\"], \"locations\": [\"Vienna\"], \"dates\": [\"1 June 2026\"] }"
+  },
+  {
+    "id": "question_answering",
+    "name": "Question Answering",
+    "description": "Answer questions using information contained in the provided text.",
+    "example_input": "Question: When is the project deadline? Context: The project deadline is 30 September 2026.",
+    "example_output": "30 September 2026"
+  },
+  {
+    "id": "semantic_similarity",
+    "name": "Semantic Similarity",
+    "description": "Measure how similar two texts are based on their meaning rather than exact wording.",
+    "example_input": "Text A: The meeting starts at 10 AM. Text B: The meeting begins at 10 o'clock.",
+    "example_output": "Similarity Score: 0.95"
+  }
+]

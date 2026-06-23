@@ -1,0 +1,241 @@
+[
+  {
+    "id": "qwen_small_instruct",
+    "name": "Qwen Small Instruct",
+    "provider": "Local",
+    "model_ref": "Qwen/Qwen2.5-1.5B-Instruct",
+    "cost_level": "local",
+    "type": "llm",
+    "supported_tasks": [
+      "classification",
+      "summarization",
+      "entity_extraction",
+      "question_answering"
+    ],
+    "description": "Instruction-tuned language model supporting multiple NLP tasks.",
+    "source": "built-in",
+    "added_by": "BKlein Digital Labs",
+    "model_url": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct"
+  },
+  {
+    "id": "bert_base_ner",
+    "name": "BERT Base NER",
+    "provider": "Local",
+    "model_ref": "dslim/bert-base-NER",
+    "cost_level": "local",
+    "type": "ner",
+    "supported_tasks": [
+      "entity_extraction"
+    ],
+    "description": "Named Entity Recognition (NER) model for extracting persons, organizations, locations, and miscellaneous entities from text.",
+    "source": "built-in",
+    "added_by": "BKlein Digital Labs",
+    "model_url": "https://huggingface.co/dslim/bert-base-NER"
+  },
+  {
+  "id": "distilbert_ner",
+  "name": "DistilBERT NER",
+  "provider": "Local",
+  "model_ref": "dslim/distilbert-NER",
+  "cost_level": "local",
+  "type": "ner",
+  "supported_tasks": [
+    "entity_extraction"
+  ],
+  "description": "Lightweight Named Entity Recognition (NER) model for extracting persons, organizations, locations, and miscellaneous entities from text.",
+  "source": "built-in",
+  "added_by": "BKlein Digital Labs",
+  "model_url": "https://huggingface.co/dslim/distilbert-NER"
+},
+  {
+  "id": "bge",
+  "name": "BGE Base",
+  "provider": "Local",
+  "model_ref": "BAAI/bge-base-en-v1.5",
+  "cost_level": "local",
+  "type": "embedding",
+  "supported_tasks": [
+    "semantic_similarity"
+  ],
+  "description": "Sentence embedding model for semantic similarity, document retrieval, and text matching.",
+  "source": "built-in",
+  "added_by": "BKlein Digital Labs",
+  "model_url": "https://huggingface.co/BAAI/bge-base-en-v1.5"
+},
+  {
+  "id": "t5_small",
+  "name": "T5 Small",
+  "provider": "Local",
+  "model_ref": "t5-small",
+  "cost_level": "local",
+  "type": "summarization",
+  "supported_tasks": [
+    "summarization"
+  ],
+  "description": "Text-to-text transformer model for summarization and sequence-to-sequence text generation tasks.",
+  "source": "built-in",
+  "added_by": "BKlein Digital Labs",
+  "model_url": "https://huggingface.co/google-t5/t5-small"
+},
+  {
+  "id": "bart_base",
+  "name": "BART Base",
+  "provider": "Local",
+  "model_ref": "facebook/bart-base",
+  "cost_level": "local",
+  "type": "summarization",
+  "supported_tasks": [
+    "summarization"
+  ],
+  "description": "Sequence-to-sequence transformer model for text summarization and text generation tasks.",
+  "source": "built-in",
+  "added_by": "BKlein Digital Labs",
+  "model_url": "https://huggingface.co/facebook/bart-base"
+},  
+  {
+    "id": "all_minilm_l6_v2",
+    "name": "all-MiniLM-L6-v2",
+    "provider": "Local",
+    "model_ref": "sentence-transformers/all-MiniLM-L6-v2",
+    "cost_level": "local",
+    "type": "embedding",
+    "supported_tasks": [
+      "semantic_similarity"
+    ],
+    "description": "Lightweight sentence embedding model for semantic similarity and document search.",
+    "source": "built-in",
+    "added_by": "BKlein Digital Labs",
+    "model_url": "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2"
+  },
+  {
+  "id": "distilbert_sentiment",
+  "name": "DistilBERT Sentiment",
+  "provider": "Local",
+  "model_ref": "distilbert-base-uncased-finetuned-sst-2-english",
+  "cost_level": "local",
+  "type": "classification",
+  "supported_tasks": [
+    "classification"
+  ],
+  "description": "Text classification model fine-tuned for sentiment analysis of English text.",
+  "source": "built-in",
+  "added_by": "BKlein Digital Labs",
+  "model_url": "https://huggingface.co/distilbert/distilbert-base-uncased-finetuned-sst-2-english"
+},
+  {
+  "id": "roberta_sentiment",
+  "name": "RoBERTa Sentiment",
+  "provider": "Local",
+  "model_ref": "cardiffnlp/twitter-roberta-base-sentiment-latest",
+  "cost_level": "local",
+  "type": "classification",
+  "supported_tasks": [
+    "classification"
+  ],
+  "description": "Text classification model fine-tuned for sentiment analysis of social media and general text.",
+  "source": "built-in",
+  "added_by": "BKlein Digital Labs",
+  "model_url": "https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest"
+},
+  {
+  "id": "distilbert_qa",
+  "name": "DistilBERT QA",
+  "provider": "Local",
+  "model_ref": "distilbert-base-cased-distilled-squad",
+  "cost_level": "local",
+  "type": "question_answering",
+  "supported_tasks": [
+    "question_answering"
+  ],
+  "description": "Question answering model fine-tuned to extract answers from a provided text passage.",
+  "source": "built-in",
+  "added_by": "BKlein Digital Labs",
+  "model_url": "https://huggingface.co/distilbert/distilbert-base-cased-distilled-squad"
+},
+  {
+  "id": "bert_qa",
+  "name": "BERT QA",
+  "provider": "Local",
+  "model_ref": "deepset/bert-base-cased-squad2",
+  "cost_level": "local",
+  "type": "question_answering",
+  "supported_tasks": [
+    "question_answering"
+  ],
+  "description": "Question answering model fine-tuned to extract answers from a provided text passage.",
+  "source": "built-in",
+  "added_by": "BKlein Digital Labs",
+  "model_url": "https://huggingface.co/deepset/bert-base-cased-squad2"
+},
+  {
+  "id": "phi3_mini",
+  "name": "Phi-3 Mini",
+  "provider": "Local",
+  "model_ref": "microsoft/Phi-3-mini-4k-instruct",
+  "cost_level": "local",
+  "type": "llm",
+  "supported_tasks": [
+    "summarization",
+    "classification",
+    "question_answering"
+  ],
+  "description": "Instruction-tuned language model for text generation, summarization, classification, and question answering tasks.",
+  "source": "built-in",
+  "added_by": "BKlein Digital Labs",
+  "model_url": "https://huggingface.co/microsoft/Phi-3-mini-4k-instruct"
+},
+{
+  "id": "gpt_4o_mini",
+  "name": "GPT-4o Mini",
+  "provider": "OpenRouter",
+  "model_ref": "openai/gpt-4o-mini",
+  "cost_level": "api",
+  "type": "llm",
+  "supported_tasks": [
+    "classification",
+    "summarization",
+    "entity_extraction",
+    "question_answering"
+  ],
+  "description": "GPT-4o Mini via OpenRouter.",
+  "source": "OpenRouter",
+  "added_by": "BKlein Digital Labs",
+  "model_url": "https://developers.openai.com/api/docs/models/gpt-4o-mini"
+},
+{
+  "id": "claude_haiku_45",
+  "name": "Claude Haiku 4.5",
+  "provider": "OpenRouter",
+  "model_ref": "anthropic/claude-haiku-4.5",
+  "cost_level": "api",
+  "type": "llm",
+  "supported_tasks": [
+    "classification",
+    "summarization",
+    "question_answering",
+    "entity_extraction"
+  ],
+  "description": "Anthropic Claude Haiku 4.5 via OpenRouter for fast instruction-following, summarization, classification, and question answering.",
+  "source": "OpenRouter",
+  "added_by": "BKlein Digital Labs",
+  "model_url": "https://openrouter.ai/anthropic/claude-haiku-4.5"
+},
+{
+  "id": "deepseek_v3",
+  "name": "DeepSeek V3",
+  "provider": "OpenRouter",
+  "model_ref": "deepseek/deepseek-chat-v3-0324",
+  "cost_level": "api",
+  "type": "llm",
+  "supported_tasks": [
+    "classification",
+    "summarization",
+    "question_answering",
+    "entity_extraction"
+  ],
+  "description": "DeepSeek V3 via OpenRouter. Strong general-purpose reasoning and language model suitable for classification, summarization, QA, and extraction tasks.",
+  "source": "OpenRouter",
+  "added_by": "BKlein Digital Labs",
+  "model_url": "https://openrouter.ai/deepseek/deepseek-chat-v3-0324"
+}
+]
