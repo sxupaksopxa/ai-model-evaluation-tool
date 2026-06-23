@@ -40,6 +40,22 @@ You may:
 
 Only models supporting the selected task are displayed.
 
+### OpenRouter Models and BYOK
+
+Some models are marked with (*).
+
+These models are accessed through OpenRouter and require an OpenRouter API key.
+
+When one or more OpenRouter models are selected:
+
+* An OpenRouter API Key field will appear.
+* Enter your OpenRouter API key.
+* The key is used only for the current evaluation request.
+* The key is not stored or logged.
+* Any usage costs are charged directly to your OpenRouter account.
+
+Local models do not require an API key.
+
 ---
 
 ## Step 3: Enter Input
