@@ -64,10 +64,33 @@ async def security_headers(request, call_next):
         "script-src 'self'; "
         "style-src 'self' 'unsafe-inline'; "
         "img-src 'self' data:; "
-        "connect-src 'self' https://openrouter.ai/api/; "
+        "connect-src 'self' https:; "
         "frame-ancestors 'none';"
     )
     return response
+
+# Request body size limit: 10 MB
+@app.middleware("http")
+async def limit_request_size(request, call_next):
+    content_length = request.headers.get("content-length")
+    if content_length and int(content_length) > 10 * 1024 * 1024:
+        return JSONResponse(
+            status_code=413,
+            content={"detail": "Request body too large (max 10MB)"},
+        )
+    return await call_next(request)
+
+# HTTPS redirect in production (skip localhost)
+@app.middleware("http")
+async def https_redirect(request, call_next):
+    host = request.headers.get("host", "")
+    if "localhost" in host or "127.0.0.1" in host:
+        return await call_next(request)
+    proto = request.headers.get("x-forwarded-proto", request.url.scheme)
+    if proto == "http":
+        url = request.url.replace(scheme="https")
+        return RedirectResponse(str(url), status_code=301)
+    return await call_next(request)
 
 @app.get("/")
 def root():

@@ -11,6 +11,7 @@ export default function EvaluationForm({
   loading,
   apiKeys,
   needsOpenRouterKey,
+  progress,
   onApiKeysChange,
   onTaskChange,
   onModelsChange,
@@ -76,7 +77,13 @@ export default function EvaluationForm({
         {loading ? "Running..." : "Run evaluation"}
       </button>
 
-      {loading && (
+      {loading && progress && (
+        <p className="field-help progress-text">
+          ⏳ Processing {progress.modelName}... ({progress.current}/{progress.total})
+        </p>
+      )}
+
+      {loading && !progress && (
         <p className="field-help">
           ⏳ Please wait...
         </p>

@@ -5,8 +5,8 @@ function About() {
         <h1>About</h1>
 
         <p>
-          AI Model Evaluation Tool is a practical platform for comparing AI
-          models on real-world tasks.
+          Compare how different AI models respond to your own real-world tasks.
+          No benchmarks. No leaderboards. Just practical exploration.
         </p>
       </section>
 

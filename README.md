@@ -1,6 +1,6 @@
 # AI Model Evaluation Tool
 
-AI Model Evaluation Tool is a practical application for comparing AI models across common Natural Language Processing (NLP) tasks. The project helps users understand how different models perform, compare outputs side by side, and explore the strengths and limitations of modern AI systems.
+A lightweight tool for exploring and comparing how different AI models handle your own real-world NLP tasks. No benchmarks, no leaderboards — just your input, side-by-side outputs, and your own judgment.
 
 Developed by BKlein Digital Labs.
 
@@ -178,7 +178,7 @@ python backend/scripts/run_regression.py
 ## Planned Improvements
 
 * Additional open-source models
-* Cost comparison
+* Cost-efficiency comparison
 * Model statistics dashboard
 * Evaluation history
 * User ratings and feedback

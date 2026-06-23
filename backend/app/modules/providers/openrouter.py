@@ -29,6 +29,11 @@ class OpenRouterProvider(BaseProvider):
                 "OpenRouter API key is required for OpenRouter models."
             )
 
+        if not openrouter_key.startswith("sk-or-"):
+            raise ValueError(
+                "Invalid OpenRouter API key format. Key must start with 'sk-or-'."
+            )
+
         openrouter_prompt = build_openrouter_prompt(
             task_id,
             prompt,
@@ -83,5 +88,4 @@ class OpenRouterProvider(BaseProvider):
             "output": output,
             "score": None,
             "estimated_cost": "OpenRouter",
-            "raw_response": data,
         }
