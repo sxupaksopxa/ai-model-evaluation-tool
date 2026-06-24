@@ -1,3 +1,4 @@
+import asyncio
 import time
 
 from app.modules.models.registry import get_model_by_id
@@ -99,14 +100,30 @@ async def evaluate_models(
     results = []
 
     for model_id in model_ids:
-        results.append(
-            await _evaluate_single_model(
-                model_id,
-                task_id,
-                input_text,
-                api_keys,
+        try:
+            result = await asyncio.wait_for(
+                _evaluate_single_model(
+                    model_id,
+                    task_id,
+                    input_text,
+                    api_keys,
+                ),
+                timeout=120,
             )
-        )
+        except asyncio.TimeoutError:
+            model = get_model_by_id(model_id)
+            result = {
+                "model_id": model_id,
+                "model_name": model.get("name"),
+                "provider": model.get("provider"),
+                "status": "failed",
+                "error": "Model evaluation timed out after 120 seconds.",
+                "output": None,
+                "analysis": None,
+                "estimated_cost": None,
+                "latency_ms": None,
+            }
+        results.append(result)
 
     return {
         "task_id": task_id,
@@ -126,12 +143,29 @@ async def evaluate_models_streaming(
     total = len(model_ids)
 
     for i, model_id in enumerate(model_ids):
-        result = await _evaluate_single_model(
-            model_id,
-            task_id,
-            input_text,
-            api_keys,
-        )
+        try:
+            result = await asyncio.wait_for(
+                _evaluate_single_model(
+                    model_id,
+                    task_id,
+                    input_text,
+                    api_keys,
+                ),
+                timeout=120,
+            )
+        except asyncio.TimeoutError:
+            model = get_model_by_id(model_id)
+            result = {
+                "model_id": model_id,
+                "model_name": model.get("name"),
+                "provider": model.get("provider"),
+                "status": "failed",
+                "error": "Model evaluation timed out after 120 seconds.",
+                "output": None,
+                "analysis": None,
+                "estimated_cost": None,
+                "latency_ms": None,
+            }
 
         yield {
             "progress": i + 1,

@@ -13,10 +13,10 @@ export default function Tasks() {
   }, []);
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-10">
-      <h1 className="text-3xl font-bold text-slate-900">Evaluation Tasks</h1>
+    <div className="page app-container">
+      <h1 className="page-title">Evaluation Tasks</h1>
 
-      <p className="mt-3 max-w-3xl text-slate-600">
+      <p>
         The AI Model Evaluation Tool compares model behavior across practical
         language tasks.
       </p>
@@ -52,6 +52,6 @@ export default function Tasks() {
       </article>
       ))}
       </section> 
-    </main>
+    </div>
   );
 }

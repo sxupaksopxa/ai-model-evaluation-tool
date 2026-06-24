@@ -1,6 +1,6 @@
 function About() {
   return (
-    <main className="page">
+    <main className="page app-container">
       <section className="hero">
         <h1>About</h1>
 

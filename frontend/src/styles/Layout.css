@@ -11,12 +11,13 @@
 
 .layout-content {
   flex: 1;
-
   width: 100%;
-  max-width: 1200px;
+}
 
+
+.app-container {
+  width: min(100% - 48px, 1120px);
   margin: 0 auto;
-  padding: 1rem 1rem;
 }
 
 /* =========================
@@ -24,13 +25,27 @@
 ========================= */
 
 .header {
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.header-content {
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding: 1rem 2rem;
-
-  border-bottom: 1px solid #ddd;
+  margin: 0 auto;
+  padding: 1rem 1rem;
 }
 
 .header-brand {
@@ -152,18 +167,6 @@
 }
 
 /* =========================
-   Pages
-========================= */
-
-.page {
-  width: 100%;
-}
-
-.page-title {
-  margin-bottom: 1rem;
-}
-
-/* =========================
    Cards
 ========================= */
 
@@ -227,4 +230,74 @@
 
   border: 1px solid #ddd;
   border-radius: 8px;
+}
+
+/* =========================
+   Legal Pages (Privacy / Terms)
+========================= */
+
+.legal-page {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.legal-container {
+  max-width: 768px;
+  margin: 0 auto;
+}
+
+.legal-title {
+  margin: 0;
+
+  font-size: 1.875rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #020617;
+}
+
+@media (min-width: 768px) {
+  .legal-title {
+    font-size: 2.25rem;
+  }
+}
+
+.legal-updated {
+  margin-top: 1rem;
+  color: #475569;
+}
+
+.legal-sections {
+  margin-top: 2.5rem;
+  color: #334155;
+}
+
+.legal-section {
+  margin-bottom: 2rem;
+}
+
+.legal-section:last-child {
+  margin-bottom: 0;
+}
+
+.legal-section h2 {
+  margin: 0;
+
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #020617;
+}
+
+.legal-section p {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  line-height: 1.75;
+}
+
+.legal-section a {
+  color: #1d4ed8;
+  text-decoration: none;
+}
+
+.legal-section a:hover {
+  text-decoration: underline;
 }

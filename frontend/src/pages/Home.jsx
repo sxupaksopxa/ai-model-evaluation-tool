@@ -132,7 +132,7 @@ export default function Home() {
   }
 
   return (
-    <main className="page">
+    <main className="page app-container">
       <section className="hero">
         <h2>AI Model Evaluation Tool</h2>
         <p>

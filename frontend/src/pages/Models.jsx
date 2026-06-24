@@ -7,12 +7,12 @@ function Models() {
   useEffect(() => {
     fetchModels()
       .then(setModels)
-      .catch((err));
+      .catch((err) => console.error("Failed to load models:", err));
   }, []);
 
   return (
-    <div className="page">
-      <h2 className="page-title">Models</h2>
+    <div className="page app-container">
+      <h1 className="page-title">Models</h1>
 
       {models.map((model) => (
         <div key={model.id} className="card">

@@ -1,7 +1,7 @@
 from app.modules.providers.base import BaseProvider
 from transformers import (pipeline,
-                          AutoTokenizer, 
-                          AutoModelForSeq2SeqLM, 
+                          AutoTokenizer,
+                          AutoModelForSeq2SeqLM,
                           AutoModelForSequenceClassification,
                           AutoModelForQuestionAnswering)
 
@@ -12,70 +12,69 @@ import torch
 import torch.nn.functional as F
 import asyncio
 
+_DEVICE = "mps" if torch.backends.mps.is_available() else "cpu"
+
 _GENERATORS = {}
 
-def get_generator(model_ref):
-
+async def get_generator(model_ref):
     if model_ref not in _GENERATORS:
-        _GENERATORS[model_ref] = pipeline(
+        _GENERATORS[model_ref] = await asyncio.to_thread(
+            pipeline,
             "text-generation",
             model=model_ref,
             device_map="auto",
         )
-
     return _GENERATORS[model_ref]
 
 _NER_PIPELINES = {}
 
-def get_ner_pipeline(model_ref):
-
+async def get_ner_pipeline(model_ref):
     if model_ref not in _NER_PIPELINES:
-
-        _NER_PIPELINES[model_ref] = pipeline(
+        _NER_PIPELINES[model_ref] = await asyncio.to_thread(
+            pipeline,
             "token-classification",
             model=model_ref,
             aggregation_strategy="simple",
+            device_map="auto",
         )
-
     return _NER_PIPELINES[model_ref]
 
 _SUMMARIZERS = {}
 
-def get_summarizer(model_ref):
-
+async def get_summarizer(model_ref):
     if model_ref not in _SUMMARIZERS:
-
-        tokenizer = AutoTokenizer.from_pretrained(
-            model_ref
+        tokenizer = await asyncio.to_thread(
+            AutoTokenizer.from_pretrained,
+            model_ref,
         )
-
-        model = AutoModelForSeq2SeqLM.from_pretrained(
-            model_ref
+        model = await asyncio.to_thread(
+            AutoModelForSeq2SeqLM.from_pretrained,
+            model_ref,
         )
-
+        if _DEVICE != "cpu":
+            model = model.to(_DEVICE)
         _SUMMARIZERS[model_ref] = {
             "tokenizer": tokenizer,
             "model": model,
         }
-
     return _SUMMARIZERS[model_ref]
 
 _CLASSIFIERS = {}
 _TOKENIZERS = {}
 
-def get_classifier(model_ref):
-
+async def get_classifier(model_ref):
     if model_ref not in _CLASSIFIERS:
-
-        _TOKENIZERS[model_ref] = (
-            AutoTokenizer.from_pretrained(model_ref)
+        _TOKENIZERS[model_ref] = await asyncio.to_thread(
+            AutoTokenizer.from_pretrained,
+            model_ref,
         )
-
-        _CLASSIFIERS[model_ref] = (
-            AutoModelForSequenceClassification
-            .from_pretrained(model_ref)
+        model = await asyncio.to_thread(
+            AutoModelForSequenceClassification.from_pretrained,
+            model_ref,
         )
-
+        if _DEVICE != "cpu":
+            model = model.to(_DEVICE)
+        _CLASSIFIERS[model_ref] = model
     return (
         _TOKENIZERS[model_ref],
         _CLASSIFIERS[model_ref],
@@ -84,19 +83,19 @@ def get_classifier(model_ref):
 _QA_MODELS = {}
 _QA_TOKENIZERS = {}
 
-def get_qa_model(model_ref):
-
+async def get_qa_model(model_ref):
     if model_ref not in _QA_MODELS:
-
-        _QA_TOKENIZERS[model_ref] = (
-            AutoTokenizer.from_pretrained(model_ref)
+        _QA_TOKENIZERS[model_ref] = await asyncio.to_thread(
+            AutoTokenizer.from_pretrained,
+            model_ref,
         )
-
-        _QA_MODELS[model_ref] = (
-            AutoModelForQuestionAnswering
-            .from_pretrained(model_ref)
+        model = await asyncio.to_thread(
+            AutoModelForQuestionAnswering.from_pretrained,
+            model_ref,
         )
-
+        if _DEVICE != "cpu":
+            model = model.to(_DEVICE)
+        _QA_MODELS[model_ref] = model
     return (
         _QA_TOKENIZERS[model_ref],
         _QA_MODELS[model_ref],
@@ -104,14 +103,13 @@ def get_qa_model(model_ref):
 
 _EMBEDDING_MODELS = {}
 
-def get_embedding_model(model_ref):
-
+async def get_embedding_model(model_ref):
     if model_ref not in _EMBEDDING_MODELS:
-        
-        _EMBEDDING_MODELS[model_ref] = (
-            SentenceTransformer(model_ref)
+        _EMBEDDING_MODELS[model_ref] = await asyncio.to_thread(
+            SentenceTransformer,
+            model_ref,
+            device=_DEVICE,
         )
-
     return _EMBEDDING_MODELS[model_ref]
 
 class LocalProvider(BaseProvider):
@@ -136,28 +134,28 @@ class LocalProvider(BaseProvider):
           task_id,
           prompt,
         )
-      
+
       elif model["type"] == "summarization":
         return await self._run_summarization(
           model,
           task_id,
           prompt,
         )
-    
+
       elif model["type"] == "classification":
         return await self._run_classification(
           model,
           task_id,
           prompt,
         )
-      
+
       elif model["type"] == "question_answering":
         return await self._run_question_answering(
           model,
           task_id,
           prompt,
         )
-      
+
       elif model["type"] == "embedding":
         if task_id == "semantic_similarity":
           return await self._run_semantic_similarity(
@@ -165,7 +163,7 @@ class LocalProvider(BaseProvider):
             task_id,
             prompt,
           )
-      
+
       raise ValueError(
         f"Unsupported model type: {model['type']}"
       )
@@ -175,7 +173,7 @@ class LocalProvider(BaseProvider):
       model: dict,
       prompt: str,
       ):
-        ner = get_ner_pipeline(model["model_ref"])
+        ner = await get_ner_pipeline(model["model_ref"])
 
         output = await asyncio.to_thread(ner, prompt)
 
@@ -213,21 +211,21 @@ class LocalProvider(BaseProvider):
           for key, value in entity.items():
             if hasattr(value, "item"):
               entity[key] = value.item()
-        
+
         return {
           "output": entities,
           "score": average_score,
           "estimated_cost": "Local",
           "raw_response": output,
         }
-    
+
     async def _run_llm(
         self,
         model: dict,
         task_id: str,
         prompt: str,
     ):
-      
+
       max_tokens_by_task = {
         "classification": 50,
         "summarization": 180,
@@ -236,7 +234,7 @@ class LocalProvider(BaseProvider):
       }
 
       max_new_tokens = max_tokens_by_task.get(task_id, 128)
-      
+
       if task_id == "entity_extraction":
         llm_prompt = f"""
         Extract entities from the text.
@@ -259,7 +257,7 @@ class LocalProvider(BaseProvider):
       else:
         llm_prompt = prompt
 
-      generator = get_generator(
+      generator = await get_generator(
           model["model_ref"]
         )
 
@@ -301,7 +299,7 @@ class LocalProvider(BaseProvider):
           "estimated_cost": "Local",
           "raw_response": result,
         }
-     
+
     async def _run_summarization(
       self,
       model: dict,
@@ -309,7 +307,7 @@ class LocalProvider(BaseProvider):
       prompt: str,
     ):
 
-      summarizer = get_summarizer(
+      summarizer = await get_summarizer(
         model["model_ref"]
       )
 
@@ -333,6 +331,9 @@ class LocalProvider(BaseProvider):
         max_length=512,
       )
 
+      if _DEVICE != "cpu":
+        inputs = {k: v.to(_DEVICE) for k, v in inputs.items()}
+
       summary_ids = await asyncio.to_thread(
         model_obj.generate,
         **inputs,
@@ -353,7 +354,7 @@ class LocalProvider(BaseProvider):
         "estimated_cost": "Local",
         "raw_response": None,
       }
-    
+
     async def _run_classification(
       self,
       model: dict,
@@ -361,7 +362,7 @@ class LocalProvider(BaseProvider):
       prompt: str,
     ):
 
-      tokenizer, classifier = get_classifier(
+      tokenizer, classifier = await get_classifier(
         model["model_ref"]
       )
 
@@ -370,6 +371,9 @@ class LocalProvider(BaseProvider):
         return_tensors="pt",
         truncation=True,
       )
+
+      if _DEVICE != "cpu":
+        inputs = {k: v.to(_DEVICE) for k, v in inputs.items()}
 
       with torch.no_grad():
         outputs = await asyncio.to_thread(classifier, **inputs)
@@ -401,14 +405,14 @@ class LocalProvider(BaseProvider):
             "confidence": confidence,
         },
       }
-    
+
     async def _run_question_answering(
       self,
       model: dict,
       task_id: str,
       prompt: str,
     ):
-      
+
       if "Context:" not in prompt:
         return {
             "output": "Invalid QA input. Expected Question and Context.",
@@ -417,7 +421,7 @@ class LocalProvider(BaseProvider):
             "raw_response": None,
         }
 
-      tokenizer, qa_model = get_qa_model(
+      tokenizer, qa_model = await get_qa_model(
         model["model_ref"]
       )
 
@@ -445,6 +449,9 @@ class LocalProvider(BaseProvider):
         return_tensors="pt",
         truncation=True,
       )
+
+      if _DEVICE != "cpu":
+        inputs = {k: v.to(_DEVICE) for k, v in inputs.items()}
 
       with torch.no_grad():
         outputs = await asyncio.to_thread(qa_model, **inputs)
@@ -491,8 +498,8 @@ class LocalProvider(BaseProvider):
             "context": context,
             "answer": answer,
         },
-    }
-    
+      }
+
     async def _run_semantic_similarity(
       self,
       model: dict,
@@ -532,7 +539,7 @@ class LocalProvider(BaseProvider):
             "raw_response": None,
         }
 
-        embedding_model = get_embedding_model(
+        embedding_model = await get_embedding_model(
           model["model_ref"]
         )
 
@@ -579,4 +586,4 @@ class LocalProvider(BaseProvider):
             "similarity": score,
             "interpretation": interpretation,
           },
-      }
+        }

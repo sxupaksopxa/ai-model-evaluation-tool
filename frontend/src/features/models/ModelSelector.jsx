@@ -86,12 +86,6 @@ export default function ModelSelector({
               <div className="model-provider">
                 {model.provider}
               </div>
-
-              {model.description && (
-                <div className="model-description-text">
-                  {model.description}
-                </div>
-              )}
             </label>
           ))}
         </div>
