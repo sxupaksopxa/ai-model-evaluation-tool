@@ -174,7 +174,7 @@ def run_task(task):
     response = requests.post(
         API_EVALUATIONS_URL,
         json=payload,
-        timeout=180,
+        timeout=300,
     )
 
     response.raise_for_status()
